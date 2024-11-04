@@ -1,0 +1,24 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: kafka-consumer
+
+  kafka:
+    bootstrap-servers: localhost:9094
+    properties:
+      security.protocol: SASL_SSL
+      sasl.mechanism: SCRAM-SHA-512
+      sasl.jaas.config: org.apache.kafka.common.security.scram.ScramLoginModule required username="username" password="secret";
+      ssl.truststore.location: src/main/resources/cert/kafka.truststore.jks
+      ssl.truststore.password: dinesh
+
+    consumer:
+      group-id: test-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonSerializer
+#      enable-auto-commit: false
+#      properties:
+#        max-poll-records: 100
+#        session.timeout.ms: 15000
