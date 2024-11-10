@@ -2,6 +2,7 @@ package com.service.user.payload;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -19,5 +20,6 @@ public class UserRegisterDto {
     private String email;
     @NotBlank(message = "phone number is mandatory")
     @Size(min = 10, max = 10, message = "invalid phone number")
+    @Pattern(regexp = "^(\\+\\d{1,3}[- ]?)?\\d{10}$", message = "Invalid phone number format")
     private String phone;
 }

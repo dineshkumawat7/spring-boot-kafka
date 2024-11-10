@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class FieldValidationErrorResponse<F> {
     private LocalDateTime timestamp;
     private boolean success;
-    private HttpStatus status;
+    private Integer status;
     private String message;
     private F fields;
 }

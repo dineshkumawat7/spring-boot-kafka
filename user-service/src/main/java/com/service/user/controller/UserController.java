@@ -3,6 +3,7 @@ package com.service.user.controller;
 import com.service.user.entity.User;
 import com.service.user.payload.ApiResponse;
 import com.service.user.payload.UserRegisterDto;
+import com.service.user.payload.UserUpdateDto;
 import com.service.user.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class UserController {
         ApiResponse<User> response = ApiResponse.<User>builder()
                 .timestamp(LocalDateTime.now())
                 .success(true)
-                .status(HttpStatus.CREATED)
+                .status(HttpStatus.CREATED.value())
                 .message("new user register successfully")
                 .data(createdUser)
                 .build();
@@ -43,7 +44,7 @@ public class UserController {
         ApiResponse<User> response = ApiResponse.<User>builder()
                 .timestamp(LocalDateTime.now())
                 .success(true)
-                .status(HttpStatus.OK)
+                .status(HttpStatus.OK.value())
                 .message("user found successfully")
                 .data(user)
                 .build();
@@ -58,9 +59,37 @@ public class UserController {
         ApiResponse<Page<User>> response = ApiResponse.<Page<User>>builder()
                 .timestamp(LocalDateTime.now())
                 .success(true)
-                .status(HttpStatus.OK)
+                .status(HttpStatus.OK.value())
                 .message("user found successfully")
                 .data(users)
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/update/{userId}")
+    public ResponseEntity<ApiResponse<User>> updateUser(
+            @PathVariable("userId") String userId,
+            @Valid @RequestBody UserUpdateDto userUpdateDto) {
+        User user = userService.updateUser(userId, userUpdateDto);
+        ApiResponse<User> response = ApiResponse.<User>builder()
+                .timestamp(LocalDateTime.now())
+                .success(true)
+                .status(HttpStatus.OK.value())
+                .message("user updated successfully")
+                .data(user)
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/delete/{userId}")
+    public ResponseEntity<?> deleteUser(@PathVariable("userId") String userId) {
+        boolean isDelete = userService.deleteUser(userId);
+        ApiResponse<?> response = ApiResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .success(true)
+                .status(HttpStatus.OK.value())
+                .message("user deleted successfully")
+                .data(null)
                 .build();
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

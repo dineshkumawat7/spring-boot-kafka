@@ -1,12 +1,12 @@
 server:
-  port: 8083
+  port: 8082
 
 spring:
   application:
     name: bank-account-service
 
   datasource:
-    url: jdbc:mysql://localhost:3306/bank_db
+    url: jdbc:mysql://localhost:3306/bank_accounts_db
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -49,9 +49,20 @@ eureka:
 resilience4j:
   circuitbreaker:
     instances:
-      userService:
+      sampleService:
         registerHealthIndicator: true
-        slidingWindowSize: 10
+        slidingWindowSize: 5
         minimumNumberOfCalls: 5
         failureRateThreshold: 50
-        waitDurationInOpenState: 10000
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 3
+        eventConsumerBufferSize: 10
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+services:
+  user-service: localhost:8080/users/

@@ -1,8 +1,15 @@
 package com.service.account.entity;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-public class User {
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString
+public class User{
     private String id;
     private String firstName;
     private String lastName;

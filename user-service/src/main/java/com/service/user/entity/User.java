@@ -31,4 +31,5 @@ public class User implements Serializable {
     private LocalDateTime updatedAt;
     private boolean isActive;
     private boolean isValid;
+
 }

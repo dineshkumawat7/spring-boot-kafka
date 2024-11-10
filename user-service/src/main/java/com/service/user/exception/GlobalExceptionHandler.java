@@ -1,6 +1,6 @@
 package com.service.user.exception;
 
-import com.service.user.payload.ApiResponse;
+import com.service.user.payload.ErrorResponse;
 import com.service.user.payload.FieldValidationErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,13 +33,24 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ApiResponse<?>> handleResourceNotFoundException(ResourceNotFoundException e){
-        ApiResponse<?> response = ApiResponse.builder()
+    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException e) {
+        ErrorResponse response = ErrorResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .success(false)
-                .status(HttpStatus.NOT_FOUND)
-                .message(e.getMessage())
+                .status(HttpStatus.NOT_FOUND.value())
+                .error(e.getMessage())
                 .build();
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleUserAlreadyExistsException(UserAlreadyExistsException e) {
+        ErrorResponse response = ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .success(false)
+                .status(HttpStatus.CONFLICT.value())
+                .error(e.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 }
